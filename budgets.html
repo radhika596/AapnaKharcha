@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block body %}
+<h1>Budgets</h1>
+<form method="post" class="row"><input type="hidden" name="csrf_token" value="{{ csrf() }}">
+<select name="category">{% for c in CATEGORIES %}<option>{{ c }}</option>{% endfor %}</select>
+<input name="monthly_limit" placeholder="Monthly limit" required inputmode="decimal"><button>Save budget</button></form>
+{% for b in items %}<div class="budget {{ b.status }}"><div><b>{{ b.category }}</b> ₹{{ '{:,.0f}'.format(b.spent) }} of ₹{{ '{:,.0f}'.format(b.limit) }} ({{ b.pct }}%)</div>
+<progress max="100" value="{{ [b.pct, 100]|min }}"></progress></div>
+{% else %}<p class="empty">No budgets yet. Set a monthly limit for a category to get alerts at 80% and 100%.</p>{% endfor %}
+{% endblock %}

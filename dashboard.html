@@ -1,0 +1,11 @@
+{% extends "base.html" %}{% block body %}
+<div class="bar"><h1>Dashboard</h1><label>Month <input type="month" id="month"></label></div>
+<div id="alerts"></div>
+<section class="kpis"><div><span>Income</span><b id="k-inc"></b></div><div><span>Expenses</span><b id="k-exp"></b></div>
+<div><span>Net</span><b id="k-net"></b></div><div><span>Savings rate</span><b id="k-rate"></b></div></section>
+<section class="grid"><div class="panel"><h2>Spending by category</h2><canvas id="cat"></canvas></div>
+<div class="panel"><h2>Last 6 months</h2><canvas id="trend"></canvas></div></section>
+<section class="panel"><h2>Budgets</h2><div id="budgets"></div></section>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+{% endblock %}

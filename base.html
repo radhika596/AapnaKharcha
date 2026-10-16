@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AapnaKharcha</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head>
+<body>
+{% if session.uid %}
+<header><a class="brand" href="/dashboard">AapnaKharcha</a>
+<nav><a href="/dashboard">Dashboard</a><a href="/transactions">Transactions</a><a href="/budgets">Budgets</a></nav>
+<form method="post" action="/logout"><input type="hidden" name="csrf_token" value="{{ csrf() }}"><button class="ghost">Log out</button></form></header>
+{% endif %}
+<main>{% for m in get_flashed_messages() %}<p class="flash">{{ m }}</p>{% endfor %}{% block body %}{% endblock %}</main>
+</body></html>

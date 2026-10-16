@@ -1,0 +1,20 @@
+{% extends "base.html" %}{% block body %}
+<h1>Transactions</h1>
+<form method="post" class="row"><input type="hidden" name="csrf_token" value="{{ csrf() }}">
+<select name="kind"><option value="expense">Expense</option><option value="income">Income</option></select>
+<input name="amount" placeholder="Amount" required inputmode="decimal">
+<select name="category"><option value="">Auto-categorize</option>{% for c in CATEGORIES %}<option>{{ c }}</option>{% endfor %}</select>
+<input name="description" placeholder="Description" maxlength="255">
+<input type="date" name="date" value="{{ today().isoformat() }}" required><button>Add transaction</button></form>
+<form method="get" class="row"><input type="month" name="month" value="{{ f.month }}">
+<select name="category"><option value="">All categories</option>{% for c in CATEGORIES %}<option {{ 'selected' if f.category == c }}>{{ c }}</option>{% endfor %}</select>
+<select name="kind"><option value="">All types</option><option value="income" {{ 'selected' if f.kind == 'income' }}>Income</option><option value="expense" {{ 'selected' if f.kind == 'expense' }}>Expense</option></select>
+<input name="q" placeholder="Search description" value="{{ f.q }}"><button class="ghost">Filter</button></form>
+<div class="row"><form method="post" action="/import" enctype="multipart/form-data" class="row"><input type="hidden" name="csrf_token" value="{{ csrf() }}">
+<input type="file" name="file" accept=".csv" required><button class="ghost">Import CSV</button></form><a class="btn" href="/export">Export CSV</a></div>
+{% if rows %}<div class="scroll"><table><thead><tr><th>Date</th><th>Category</th><th>Description</th><th class="num">Amount</th><th></th></tr></thead><tbody>
+{% for t in rows %}<tr><td>{{ t.date }}</td><td>{{ t.category }}</td><td>{{ t.description }}</td>
+<td class="num {{ t.kind }}">{{ '+' if t.kind == 'income' else '-' }}₹{{ '{:,.2f}'.format(t.amount) }}</td>
+<td><form method="post" action="/transactions/{{ t.id }}/delete"><input type="hidden" name="csrf_token" value="{{ csrf() }}"><button class="ghost">Delete</button></form></td></tr>{% endfor %}
+</tbody></table></div>{% else %}<p class="empty">No transactions match. Add one above or import a CSV with columns date, description, amount.</p>{% endif %}
+{% endblock %}

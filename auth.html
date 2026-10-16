@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block body %}
+<section class="auth"><h1>{{ "Create your account" if mode == "register" else "Welcome back" }}</h1>
+<form method="post"><input type="hidden" name="csrf_token" value="{{ csrf() }}">
+<label>Email<input name="email" type="email" required autofocus></label>
+<label>Password<input name="password" type="password" minlength="8" required></label>
+<button>{{ "Create account" if mode == "register" else "Log in" }}</button></form>
+<p>{% if mode == "register" %}Have an account? <a href="/login">Log in</a>{% else %}New here? <a href="/register">Create an account</a>{% endif %}</p></section>
+{% endblock %}
